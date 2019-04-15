@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <TextView
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <EditText
+        android:id="@+id/password_change_field"
+        android:layout_width="200dp"
+        android:layout_height="20dp"
+        android:layout_centerInParent="true"
+        android:background="#11000000"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/change_password_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change password"/>
+
+    <VideoView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="532dp"
+        android:layout_above="@+id/btn_play_pause"
+        tools:layout_editor_absoluteX="91dp"
+        tools:layout_editor_absoluteY="110dp" />
+
+    <ImageButton
+        android:id="@+id/btn_play_pause"
+        android:src="@drawable/ic_play"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image_descr" />
+
+</LinearLayout>
