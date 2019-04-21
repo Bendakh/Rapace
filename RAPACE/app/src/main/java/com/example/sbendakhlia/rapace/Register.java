@@ -1,5 +1,6 @@
 package com.example.sbendakhlia.rapace;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +31,7 @@ public class Register extends Activity {
     private ProgressBar loadingProgress;
     private CardView regBtn;
     private CheckBox admin;
+    private Button goToLoginButton;
 
     private FirebaseAuth mAuth;
 
@@ -44,9 +47,10 @@ public class Register extends Activity {
         password_reg = findViewById(R.id.password_reg);
         password_confirm = findViewById(R.id.password_confirm);
         loadingProgress = findViewById(R.id.loading_progress);
+        goToLoginButton = findViewById(R.id.go_to_login_button);
 
         loadingProgress.setVisibility(View.INVISIBLE);
-
+        FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -76,6 +80,15 @@ public class Register extends Activity {
                 }
             }
         });
+
+        goToLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent loginIntent = new Intent(Register.this, Login.class);
+                startActivity(loginIntent);
+
+            }
+        });
     }
 
     private void CreateUserAccount(final String nameString, final String emailString, final String passwordString, final boolean adminBool) {
@@ -93,12 +106,15 @@ public class Register extends Activity {
                     newUser.setName(nameString);
                     newUser.setEmail(emailString);
                     newUser.setPassword(passwordString);
+
                     new FirebaseDataBaseHelper().AddUser(newUser, new FirebaseDataBaseHelper.DataStatus() {
 
 
                         @Override
                         public void DataIsInserted() {
                             ShowMessage("Account Created!");
+                            Intent loginIntent = new Intent(Register.this, Login.class);
+                            startActivity(loginIntent);
                         }
 
                         @Override

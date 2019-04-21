@@ -4,13 +4,16 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -36,6 +39,7 @@ public class FirebaseDataBaseHelper {
 
     public FirebaseDataBaseHelper()
     {
+
         mDatabase = FirebaseDatabase.getInstance();
         mReferenceUsers = mDatabase.getReference("Users");
 
@@ -53,6 +57,8 @@ public class FirebaseDataBaseHelper {
                 String tempName = "";
                 String tempEmail = "";
                 boolean tempAdmin = false;
+                int tempnDays = 0;
+                String tempLastChangeDate = "";
 
                 if(dataSnapshot.exists()) {
                 /*System.out.println(dataSnapshot.child(uid).getValue(User.class).getId());
@@ -63,11 +69,15 @@ public class FirebaseDataBaseHelper {
                      tempName = dataSnapshot.child(uid).getValue(User.class).getName();
                      tempEmail = dataSnapshot.child(uid).getValue(User.class).getEmail();
                      tempAdmin = dataSnapshot.child(uid).getValue(User.class).isAdmin();
+                     tempnDays = dataSnapshot.child(uid).getValue(User.class).getnDays();
+                     tempLastChangeDate = dataSnapshot.child(uid).getValue(User.class).getLastChangedPasswordDate();
 
                     toReturn.setId(tempId);
                     toReturn.setName(tempName);
                     toReturn.setEmail(tempEmail);
                     toReturn.setAdmin(tempAdmin);
+                    toReturn.setnDays(tempnDays);
+                    toReturn.setLastChangedPasswordDate(tempLastChangeDate);
 
                     fb.onDataFound(true);
 
@@ -110,6 +120,27 @@ public class FirebaseDataBaseHelper {
     public void UpdatePassword(final String uid, String newPassword, final DataStatus ds)
     {
         mReferenceUsers.child(uid).child("password").setValue(newPassword).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
+                Date todayDate = new Date();
+                String newDate = formater.format(todayDate);
+
+                mReferenceUsers.child(uid).child("lastChangedPasswordDate").setValue(newDate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        ds.DataIsUpdated();
+                    }
+                });
+            }
+        });
+
+    }
+
+    public void UpdateNDays(final String uid, int newNDays, final DataStatus ds)
+    {
+        mReferenceUsers.child(uid).child("nDays").setValue(newNDays).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 ds.DataIsUpdated();
