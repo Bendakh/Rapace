@@ -7,6 +7,20 @@
     android:orientation="vertical"
     tools:context=".Settings">
 
+    <EditText
+        android:id="@+id/email_change_field"
+        android:layout_width="200dp"
+        android:layout_height="20dp"
+        android:background="#11000000"
+        android:ems="10"
+        android:hint="email"
+        android:inputType="textEmailAddress"/>
+
+    <Button
+        android:id="@+id/change_email_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change Email"/>
 
     <EditText
         android:id="@+id/password_change_field"
@@ -38,6 +52,21 @@
         android:id="@+id/change_ndays_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Change password"/>
+        android:text="Change number of days"/>
+
+    <Spinner
+        android:id="@+id/alert_modes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ></Spinner>
+
+    <Button
+        android:id="@+id/change_alert_modes_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change alert mode"/>
+
+
+
 
 </LinearLayout>

@@ -8,20 +8,33 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.UserManager;
+import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
@@ -36,9 +49,19 @@ public class MainActivity extends AppCompatActivity {
     //EditText passwordChangeField;
     //Button changePasswordButton;
     FirebaseAuth mAuth;
-    SharedPreferences sp = getApplicationContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+    SharedPreferences mPreferences;
 
     Button settingsButton;
+    Button userManagementButton;
+
+    //new user personnalisation
+    //LinearLayout newUserLl;
+    //EditText userNamePers;
+    //EditText userMailPers;
+    //EditText userPasswordPers;
+    //Button userPersButton;
+    boolean firstConnect;
+
 
     //We will use this variable to get the video from the server
     String videoUrl = "http://mic.duytan.edu.vn:86/FINAL.mp4";
@@ -48,11 +71,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        //Log.e("test","test");
 
 
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         test = findViewById(R.id.test);
         settingsButton = findViewById(R.id.settings_button);
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +87,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //changePasswordButton = findViewById(R.id.change_password_button);
-        //passwordChangeField = findViewById(R.id.password_change_field);
+        //newUserLl = findViewById(R.id.new_user_personalise);
+        //userNamePers = findViewById(R.id.user_name_pers);
+        //userMailPers = findViewById(R.id.user_mail_pers);
+        //userPasswordPers = findViewById(R.id.user_password_pers);
+        //userPersButton = findViewById(R.id.confirm_user_pers);
+
+        //newUserLl.setVisibility(View.INVISIBLE);
+
         Bundle data = getIntent().getExtras();
         if(data == null)
         {
@@ -76,13 +106,87 @@ public class MainActivity extends AppCompatActivity {
         boolean admin = data.getBoolean("_admin");
         int nDays = data.getInt("_nDays");
         String lastChange = data.getString("_lastChange");
+        firstConnect = data.getBoolean("_firstConnect");
+        final String password = data.getString("_password");
 
-        sp.edit().putInt("ndays", nDays).putString("lastChange",lastChange).apply();
+        mPreferences.edit().putInt("ndays", nDays).putString("lastChange",lastChange).apply();
 
+        //Normal user fist connect( true if first connexion has been done, else false )
+        if(!admin && !firstConnect)
+        {
+            //newUserLl.setVisibility(View.VISIBLE);
+            DisplayFirstConnectDialog(password);
+        }
+
+        /*userPersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String newName = userNamePers.getText().toString();
+                final String newMail = userMailPers.getText().toString();
+                final String newPassword = userPasswordPers.getText().toString();
+
+                if(newName.isEmpty() || newMail.isEmpty() || newPassword.isEmpty())
+                {
+                    ShowMessage("Please enter all details!");
+                    return;
+                }
+
+                else
+                {
+                    AuthCredential ac = EmailAuthProvider.getCredential(mAuth.getCurrentUser().getEmail(),password);
+
+                    mAuth.getCurrentUser().reauthenticate(ac).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            if(task.isSuccessful()) {
+
+                                new FirebaseDataBaseHelper().UpdateUser(mAuth.getCurrentUser().getUid(), newName, newMail, userPasswordPers.getText().toString(), new FirebaseDataBaseHelper.DataStatus() {
+                                    @Override
+                                    public void DataIsInserted() {
+
+                                    }
+
+                                    @Override
+                                    public void DataIsUpdated() {
+                                        mAuth.getCurrentUser().updateEmail(newMail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                mAuth.getCurrentUser().updatePassword(userPasswordPers.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        ShowMessage("User updated");
+                                                    }
+                                                });
+                                            }
+                                        });
+
+                                    }
+
+                                    @Override
+                                    public void DataIsDeleted() {
+
+                                    }
+                                });
+                                firstConnect = true;
+                                newUserLl.setVisibility(View.INVISIBLE);
+                            }
+
+                        }
+                    });
+
+
+
+                }
+            }
+        });*/
+
+
+        //Password change check
         try
         {
             long value = User.GetNumberOfDaysSinceLastPasswordChange(lastChange);
-            sp.edit().putLong("daysSinceChange",value).apply();
+            mPreferences.edit().putLong("daysSinceChange",value).apply();
             if(value >= (nDays - 5))
             {
                 //Propose password change
@@ -113,37 +217,24 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        test.setText(name + " " + email + " " + id + " " + admin);
-
-        /*changePasswordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(passwordChangeField.getText() != null)
-                {
-                    new FirebaseDataBaseHelper().UpdatePassword(mAuth.getCurrentUser().getUid(), passwordChangeField.getText().toString(), new FirebaseDataBaseHelper.DataStatus() {
-                        @Override
-                        public void DataIsInserted() {
-
-                        }
-
-                        @Override
-                        public void DataIsUpdated() {
-                            mAuth.getCurrentUser().updatePassword(passwordChangeField.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    ShowMessage("Password updated!");
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void DataIsDeleted() {
-
-                        }
-                    });
+        test.setText(name + " " + email + " " + id + " " + admin + " " + password);
+        userManagementButton = findViewById(R.id.users_management_button);
+        if(!admin)
+        {
+            userManagementButton.setVisibility(View.INVISIBLE);
+        }
+        else if(admin)
+        {
+            userManagementButton.setVisibility(View.VISIBLE);
+            userManagementButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, UserManagement.class);
+                    startActivity(intent);
                 }
-            }
-        });*/
+            });
+        }
+
         /*vv = findViewById(R.id.video_view);
         btnPlayPause = findViewById(R.id.btn_play_pause);
 
@@ -195,8 +286,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        long value = sp.getLong("daysSinceChange",0);
-        int nDays = sp.getInt("ndays",0);
+        long value = mPreferences.getLong("daysSinceChange",0);
+        int nDays = mPreferences.getInt("ndays",0);
 
         if(value >= nDays)
         {
@@ -207,5 +298,86 @@ public class MainActivity extends AppCompatActivity {
 
     private void ShowMessage(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+    }
+
+    private void DisplayFirstConnectDialog(final String currentPassword)
+    {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        alertDialog.setTitle("Personalise your logins");
+        alertDialog.setMessage("Please fill all your new informations");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View layout_pwd = inflater.inflate(R.layout.first_connect_dialog, null);
+
+        final EditText userNamePers = layout_pwd.findViewById(R.id.user_name_pers);
+        final EditText userMailPers = layout_pwd.findViewById(R.id.user_mail_pers);
+        final EditText userPasswordPers = layout_pwd.findViewById(R.id.user_password_pers);
+        alertDialog.setView(layout_pwd);
+
+        alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialogInterface, int i) {
+                final String newName = userNamePers.getText().toString();
+                final String newMail = userMailPers.getText().toString();
+                final String newPassword = userPasswordPers.getText().toString();
+
+                if(newName.isEmpty() || newMail.isEmpty() || newPassword.isEmpty())
+                {
+                    ShowMessage("Please enter all details!");
+                    DisplayFirstConnectDialog(currentPassword);
+                }
+
+                else
+                {
+                    AuthCredential ac = EmailAuthProvider.getCredential(mAuth.getCurrentUser().getEmail(),currentPassword);
+
+                    mAuth.getCurrentUser().reauthenticate(ac).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            if(task.isSuccessful()) {
+
+                                new FirebaseDataBaseHelper().UpdateUser(mAuth.getCurrentUser().getUid(), newName, newMail, userPasswordPers.getText().toString(), new FirebaseDataBaseHelper.DataStatus() {
+                                    @Override
+                                    public void DataIsInserted() {
+
+                                    }
+
+                                    @Override
+                                    public void DataIsUpdated() {
+                                        mAuth.getCurrentUser().updateEmail(newMail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                mAuth.getCurrentUser().updatePassword(userPasswordPers.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        ShowMessage("User updated");
+                                                    }
+                                                });
+                                            }
+                                        });
+
+                                    }
+
+                                    @Override
+                                    public void DataIsDeleted() {
+
+                                    }
+                                });
+                                firstConnect = true;
+                                dialogInterface.dismiss();
+                            }
+
+                        }
+                    });
+
+
+
+                }
+
+            }
+        //Fin de setpositive
+        });
+        alertDialog.show();
     }
 }

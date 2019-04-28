@@ -5,35 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
-
-
-    <TextView
-        android:id="@+id/test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+    tools:context=".UserManagement">
 
     <Button
-        android:id="@+id/settings_button"
+        android:id="@+id/add_a_user_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Settings"/>
-
-    <Button
-        android:id="@+id/users_management_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Users management"/>
+        android:text="Add a User"/>
 
     <!--<LinearLayout
-        android:id="@+id/new_user_personalise"
+        android:id="@+id/new_user_interface"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/user_name_pers"
+            android:id="@+id/user_name"
             android:layout_width="200dp"
             android:layout_height="20dp"
             android:ems="10"
@@ -44,7 +31,7 @@
 
 
         <EditText
-            android:id="@+id/user_mail_pers"
+            android:id="@+id/user_mail"
             android:layout_width="200dp"
             android:layout_height="20dp"
             android:ems="10"
@@ -54,7 +41,7 @@
             android:textSize="16sp"/>
 
         <EditText
-            android:id="@+id/user_password_pers"
+            android:id="@+id/user_password"
             android:layout_width="200dp"
             android:layout_height="20dp"
             android:ems="10"
@@ -63,31 +50,22 @@
             android:hint="Password"
             android:textSize="16sp"/>
 
+        <EditText
+            android:id="@+id/user_password_confirm"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:background="#11000000"
+            android:hint="Confirm password"
+            android:textSize="16sp"/>
+
         <Button
-            android:id="@+id/confirm_user_pers"
+            android:id="@+id/confirm_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Confirm"/>
 
     </LinearLayout>-->
-
-
-    <VideoView
-        android:id="@+id/video_view"
-        android:layout_width="match_parent"
-        android:layout_height="532dp"
-        android:layout_above="@+id/btn_play_pause"
-        tools:layout_editor_absoluteX="91dp"
-        tools:layout_editor_absoluteY="110dp" />
-
-    <ImageButton
-        android:id="@+id/btn_play_pause"
-        android:src="@drawable/ic_play"
-        android:background="@color/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/image_descr" />
-
-
 
 </LinearLayout>

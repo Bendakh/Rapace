@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -70,11 +71,13 @@ public class Login extends Activity {
         }
         else
         {
+
             mAuth.signInWithEmailAndPassword(login,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful())
                     {
+
                         //Start Activity
                         //System.out.println(mAuth.getCurrentUser().getUid());
                             user = new FirebaseDataBaseHelper().GetUser(mAuth.getCurrentUser().getUid(), new FirebaseDataBaseHelper.FirebaseSuccessListener() {
@@ -87,7 +90,11 @@ public class Login extends Activity {
                                 intent.putExtra("_admin", user.isAdmin());
                                 intent.putExtra("_nDays", user.getnDays());
                                 intent.putExtra("_lastChange",user.getLastChangedPasswordDate());
-                                ShowMessage("Done");
+                                intent.putExtra("_alertMode",user.getAlertMode());
+                                intent.putExtra("_firstConnect", user.isFirstConnect());
+                                intent.putExtra("_password", user.getPassword());
+                                Log.e("E",user.getPassword());
+                                //ShowMessage("Done");
                                 startActivity(intent);
                             }
                         });

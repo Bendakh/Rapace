@@ -1,19 +1,42 @@
 package com.example.sbendakhlia.rapace;
 
 
+import android.app.AlertDialog;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
 public class User {
-    private String name;
-    private String email;
-    private String password;
     private boolean admin;
+    private AlertModes alertMode;
+    private String email;
+    private boolean firstConnect;
     private String id;
     private String lastChangedPasswordDate;
     private int nDays;
+    private String name;
+    private String password;
+
+
+    public enum AlertModes
+    {
+        ALARM,
+        VIBRATION,
+        FLASH,
+        VISUALISATION
+    }
+
+
+
+    public AlertModes getAlertMode() {
+        return alertMode;
+    }
+
+    public void setAlertMode(AlertModes alertMode) {
+        this.alertMode = alertMode;
+    }
 
     public User() {
         SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
@@ -22,6 +45,8 @@ public class User {
         this.lastChangedPasswordDate = thisDate;
 
         this.nDays = 30;
+        this.alertMode = AlertModes.ALARM;
+        this.firstConnect = false;
     }
 
     public User(String name, String email, String password, boolean admin, String id) {
@@ -37,6 +62,8 @@ public class User {
         this.lastChangedPasswordDate = thisDate;
 
         this.nDays = 30;
+        this.alertMode = AlertModes.ALARM;
+        this.firstConnect = false;
     }
 
     public int getnDays() {
@@ -53,6 +80,14 @@ public class User {
 
     public void setLastChangedPasswordDate(String lastChangedPasswordDate) {
         this.lastChangedPasswordDate = lastChangedPasswordDate;
+    }
+
+    public boolean isFirstConnect() {
+        return firstConnect;
+    }
+
+    public void setFirstConnect(boolean firstConnect) {
+        this.firstConnect = firstConnect;
     }
 
     public String getId() {
