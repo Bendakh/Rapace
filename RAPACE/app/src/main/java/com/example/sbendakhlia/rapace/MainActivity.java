@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button settingsButton;
     Button userManagementButton;
+    Button alerTest;
 
     //new user personnalisation
     //LinearLayout newUserLl;
@@ -234,6 +235,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        alerTest = findViewById(R.id.go_to_alertTest);
+        alerTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AlertTest.class);
+                startActivity(intent);
+            }
+        });
 
         /*vv = findViewById(R.id.video_view);
         btnPlayPause = findViewById(R.id.btn_play_pause);

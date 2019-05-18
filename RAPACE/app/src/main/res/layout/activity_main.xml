@@ -26,6 +26,12 @@
         android:layout_height="wrap_content"
         android:text="Users management"/>
 
+    <Button
+        android:id="@+id/go_to_alertTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alert test"/>
+
     <!--<LinearLayout
         android:id="@+id/new_user_personalise"
         android:layout_width="match_parent"
