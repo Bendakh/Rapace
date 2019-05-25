@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,37 +11,51 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="108dp"
-        android:layout_height="77dp"
+        android:layout_width="241dp"
+        android:layout_height="196dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="152dp"
-        android:layout_marginLeft="152dp"
-        android:layout_marginTop="71dp"
-        android:layout_marginEnd="151dp"
-        android:layout_marginRight="151dp"
-        android:src="@android:drawable/btn_star_big_on" />
-
+        android:layout_marginStart="87dp"
+        android:layout_marginLeft="87dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="82dp"
+        android:layout_marginRight="82dp"
+        android:src="@drawable/logo" />
 
 
     <EditText
         android:id="@+id/login_field"
         android:layout_width="200dp"
         android:layout_height="20dp"
+        android:layout_below="@+id/logo"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="104dp"
+        android:layout_marginLeft="104dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="107dp"
+        android:layout_marginRight="107dp"
         android:background="#11000000"
         android:ems="10"
         android:hint="E-mail"
         android:inputType="textEmailAddress"
-        android:textSize="16dp"/>
+        android:textSize="16dp" />
 
     <EditText
         android:id="@+id/password_field"
         android:layout_width="200dp"
         android:layout_height="20dp"
-        android:layout_centerInParent="true"
+
+        android:layout_below="@+id/login_field"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="106dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="106dp"
         android:background="#11000000"
         android:ems="10"
         android:hint="Password"
@@ -51,15 +65,17 @@
         android:id="@+id/login_button"
         android:layout_width="300dp"
         android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="150dp"
         app:cardBackgroundColor="@color/colorAccent"
         app:cardCornerRadius="25dp"
-        app:cardElevation="10dp"
-        >
+        app:cardElevation="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_alignStart="@+id/login_button">
 
             <TextView
                 android:id="@+id/login_text_view"
@@ -72,4 +88,4 @@
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</RelativeLayout>

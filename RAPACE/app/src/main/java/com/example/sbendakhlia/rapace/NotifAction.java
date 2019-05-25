@@ -34,15 +34,15 @@ public class NotifAction extends AppCompatActivity {
                 switch (item.getItemId())
                 {
                     case R.id.visualisation:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new Fragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new VisualisationFragment()).commit();
                         break;
 
                     case R.id.appel:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new Fragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new AppelFragment()).commit();
                         break;
 
                     case R.id.affichage_map:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new Fragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new AffichageMapFragment()).commit();
                         break;
 
                 }
@@ -58,7 +58,7 @@ public class NotifAction extends AppCompatActivity {
 
         //To not reset the activity when we change orientation for example
         if(savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new Fragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new VisualisationFragment()).commit();
             nv.setCheckedItem(R.id.visualisation);
         }
 

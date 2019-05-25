@@ -46,6 +46,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="paddingPercent" value="5" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -66,9 +67,11 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_actions" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="C:\Users\Benda\Desktop\121-1219889_polygonal-bird-google-search-polygon.png" />
+                                      <entry key="outputName" value="logo" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="ff6730" />
+                                      <entry key="themeColor" value="d9d9da" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -191,7 +194,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputIconType" value="LAUNCHER_LEGACY" />
+                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>
@@ -200,6 +203,11 @@
                 </map>
               </option>
             </PersistentState>
+          </value>
+        </entry>
+        <entry key="vectorWizard">
+          <value>
+            <PersistentState />
           </value>
         </entry>
       </map>

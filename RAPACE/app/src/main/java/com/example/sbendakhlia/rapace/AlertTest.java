@@ -132,6 +132,16 @@ public class AlertTest extends AppCompatActivity {
         mBuilder.setDefaults(0);
 
 
+        Intent intent = new Intent(AlertTest.this, NotifAction.class);
+        intent.putExtra("notificationID", 112);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(NotifAction.class);
+        stackBuilder.addNextIntent(intent);
+
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
+        mBuilder.setContentIntent(pendingIntent);
+
 
         nm.notify(112, mBuilder.build());
     }
